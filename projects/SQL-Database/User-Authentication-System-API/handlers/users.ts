@@ -1,67 +1,38 @@
 import { type Request, type Response } from "express";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import model from "../model/index";
+import response from "../constant/response";
 
 const controller = {
-	async signup(request: Request, response: Response) {
+	async signup(req: Request, res: Response) {
 		try {
-			const existUser = await prisma.users.findMany({
-				where: { username: request.body.username },
-			});
-			if (existUser.length) {
-				response.status(403).json({
-					status: false,
-					code: "BAD-REQUEST",
-					message: "username is exist",
-				});
+			const { data: isExistUser } = await model.users.exist.by.username(req.body.username);
+			if (isExistUser) {
+				return response.error[403](res, "username is exist");
 			}
-			const user = await prisma.users.create({
-				data: request.body,
+			const { success, data, error } = await model.users.create({
+				data: req.body,
 			});
-			response.status(200).json({
-				status: true,
-				message: "signup is success",
-				data: user,
-			});
+			if (!success) {
+				return response.error[500](res, undefined, error);
+			}
+			response.success[200](res, "signup is success");
 		} catch (error: any) {
-			console.log(error);
-			response.status(500).json({
-				status: false,
-				message: error?.message,
-				error: Object.keys(error).length ? error : undefined,
-			});
+			response.error[500](res, undefined, Object.keys(error).length ? error : undefined);
 		}
 	},
-	async login(request: Request, response: Response) {
+	async login(req: Request, res: Response) {
 		try {
-			const userLoginInfo = request.body;
-			const user = await prisma.users.findUnique({
-				where: userLoginInfo,
-			});
-			if (!user) {
-				response.status(401).json({
-					status: false,
-					code: "AUTH-ERROR",
-					message: "validation is not success",
-				});
+			const { data: login } = await model.users.authentication(req.body);
+			if (!login) {
+				return response.error[401](res, "login is failed");
 			}
-			response.status(200).json({
-				status: true,
-				message: "login is success",
-			});
+			response.success[200](res, "login is success");
 		} catch (error: any) {
-			response.status(500).json({
-				status: false,
-				message: error?.message,
-				error,
-			});
+			response.error[500](res, error?.message);
 		}
 	},
-	logout(request: Request, response: Response) {
-		response.status(200).json({
-			status: true,
-			message: "logout is success",
-		});
+	logout(req: Request, res: Response) {
+		response.success[200](res, "logout is success");
 	},
 };
 
