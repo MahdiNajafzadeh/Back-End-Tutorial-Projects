@@ -18,7 +18,7 @@ const schemas: Schema = {
 	}),
 };
 
-const validator = (request: Request, response: Response, next: Function) => {
+const bodyValidator = (request: Request, response: Response, next: Function) => {
 	const identifier = `${request.method}:${request.path}`;
 	if (!Object.keys(schemas).includes(identifier)) return;
 	const { error } = schemas[identifier].validate(request.body);
@@ -35,4 +35,4 @@ const validator = (request: Request, response: Response, next: Function) => {
 	}
 };
 
-export default validator;
+export default bodyValidator;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import users from "./handlers/users.ts";
-import validator from "./middleware/schema.validation";
+import validator from "./middleware/users/body.validation.ts";
 
 const router = Router();
 
