@@ -13,8 +13,7 @@ Back End Tutorial Projects
 
 ## Projects
 
-## SQL Database
+## Authentication
 1. User Authentication System (API)
-2. Simple Blog System (API)
-3. Simple Search engine (API)
-4. University Management System (API)
+## SQL Database
+2. University Management System (API)
