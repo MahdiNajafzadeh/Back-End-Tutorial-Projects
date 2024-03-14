@@ -1,42 +1,42 @@
 import { type Response } from "express";
 
-const success_200 = (r: Response, message?: string, data?: any) => {
-	return r
+const success_200 = (res: Response, message?: string, data?: any) => {
+	return res
 		.status(200)
 		.json({
 			status: true,
 			message: message ? message : "task is success",
-			data
+			data,
 		})
 		.end();
 };
 
-const error_401 = (r: Response, message?: string, data?: any) => {
-	return r
+const error_auth = (res: Response, message?: string, data?: any) => {
+	return res
 		.status(401)
 		.json({
 			status: false,
 			code: "AUTH-ERROR",
 			message: message ? message : "authentication is failed",
-			data
+			data,
 		})
 		.end();
 };
 
-const error_403 = (r: Response, message?: string, data?: any) => {
-	return r
+const error_bad = (res: Response, message?: string, data?: any) => {
+	return res
 		.status(403)
 		.json({
 			status: false,
 			code: "BAD-REQUEST-ERROR",
 			message: message ? message : "request is bad",
-			data
+			data,
 		})
 		.end();
 };
 
-const error_500 = (r: Response, message?: string, data?: any) => {
-	return r
+const error_internal = (res: Response, message?: string, data?: any) => {
+	return res
 		.status(500)
 		.json({
 			status: false,
@@ -48,12 +48,10 @@ const error_500 = (r: Response, message?: string, data?: any) => {
 };
 
 export default {
-	success: {
-		"200": success_200,
-	},
+	success: success_200,
 	error: {
-		"401": error_401,
-		"403": error_403,
-		"500": error_500,
+		auth: error_auth,
+		bad: error_bad,
+		internal: error_internal,
 	},
 };

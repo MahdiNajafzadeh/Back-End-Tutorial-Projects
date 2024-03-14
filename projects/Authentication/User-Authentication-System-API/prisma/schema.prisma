@@ -19,12 +19,4 @@ model users {
   name     String
   email    String
   password String
-  tokens   tokens[]
-}
-
-model tokens {
-  id     Int      @id @default(autoincrement())
-  userId Int
-  secret String
-  user   users    @relation(fields: [userId], references: [id])
 }

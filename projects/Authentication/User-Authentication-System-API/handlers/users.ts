@@ -1,39 +1,49 @@
-import { type Request, type Response } from "express";
+import type { Request, Response, NextFunction } from "express";
+import { token } from "../decorator";
+import jwt from "../helper/jwt";
 import model from "../model/index";
 import response from "../constant/response";
 
-const controller = {
-	async signup(req: Request, res: Response) {
+class controller {
+	@token.noToken
+	async signup(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { data: isExistUser } = await model.users.exist.by.username(req.body.username);
-			if (isExistUser) {
-				return response.error[403](res, "username is exist");
-			}
-			const { success, data, error } = await model.users.create({
+			if (isExistUser) return response.error.bad(res, "username is exist");
+			const { success, error } = await model.users.create({
 				data: req.body,
 			});
-			if (!success) {
-				return response.error[500](res, undefined, error);
-			}
-			response.success[200](res, "signup is success");
+			if (!success) return response.error.internal(res, undefined, error);
+			response.success(res, "signup is success");
 		} catch (error: any) {
-			response.error[500](res, undefined, Object.keys(error).length ? error : undefined);
+			response.error.internal(res, undefined, Object.keys(error).length ? error : undefined);
 		}
-	},
-	async login(req: Request, res: Response) {
+	}
+
+	@token.noToken
+	async login(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { data: login } = await model.users.authentication(req.body);
-			if (!login) {
-				return response.error[401](res, "login is failed");
-			}
-			response.success[200](res, "login is success");
+			if (!login) return response.error.auth(res, "login is failed");
+			const token = jwt.encode({ username: req.body.username }, { expiresIn: "1m" });
+			res.cookie("token", token, { maxAge: 60 * 1000 });
+			response.success(res, "login is success");
 		} catch (error: any) {
-			response.error[500](res, error?.message);
+			response.error.auth(res, error?.message);
 		}
-	},
-	logout(req: Request, res: Response) {
-		response.success[200](res, "logout is success");
-	},
-};
+	}
 
-export default controller;
+	@token.haveToken
+	logout(req: Request, res: Response, next: NextFunction) {
+		if (!req.cookies?.token) return response.error.auth(res);
+		res.cookie("token", "", { maxAge: 0 });
+		response.success(res, "logout is success");
+	}
+
+	info = {
+		get(req: Request, res: Response, next: NextFunction) {},
+		edit(req: Request, res: Response, next: NextFunction) {},
+	};
+}
+
+export default new controller();

@@ -1,11 +1,12 @@
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
+import response from "../../constant/response";
 import joi, { type ObjectSchema } from "joi";
 
-interface Schema {
+interface SchemaCollection {
 	[key: string]: ObjectSchema<any>;
 }
 
-const schemas: Schema = {
+const schemas: SchemaCollection = {
 	"POST:/user/signup": joi.object().keys({
 		username: joi.string().min(4).required(),
 		name: joi.string().required(),
@@ -18,21 +19,16 @@ const schemas: Schema = {
 	}),
 };
 
-const bodyValidator = (request: Request, response: Response, next: Function) => {
-	const identifier = `${request.method}:${request.path}`;
-	if (!Object.keys(schemas).includes(identifier)) return;
-	const { error } = schemas[identifier].validate(request.body);
-	if (!error) {
-		next();
-	} else {
-		response
-			.status(403)
-			.json({
-				status: false,
-				message: error?.message,
-				error: error?.details,
-			})
+const bodyValidator = (req: Request, res: Response, next: NextFunction) => {
+	const identifier = `${req.method}:${req.path}`;
+	if (!Object.keys(schemas).includes(identifier)) {
+		return next();
 	}
+	const { error } = schemas[identifier].validate(req.body);
+	if (error) {
+		return response.error.bad(res, error?.message, error?.details);
+	}
+	next();
 };
 
 export default bodyValidator;

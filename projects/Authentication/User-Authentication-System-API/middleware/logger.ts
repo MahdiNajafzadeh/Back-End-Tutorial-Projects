@@ -1,6 +1,6 @@
-import { type Request, type Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
-const logger = (request: Request, response: Response, next: Function) => {
+const logger = (request: Request, response: Response, next: NextFunction) => {
 	console.log(`${request.method} : ${request.path}`);
 	next();
 };
