@@ -4,7 +4,7 @@ import jwt from "../helper/jwt";
 import model from "../model/index";
 import response from "../constant/response";
 
-class controller {
+class Controller {
 	@token.noToken
 	async signup(req: Request, res: Response, next: NextFunction) {
 		try {
@@ -40,10 +40,41 @@ class controller {
 		response.success(res, "logout is success");
 	}
 
+	@token.haveToken
+	@token.includePayload
+	private async info_get(req: Request, res: Response, next: NextFunction) {
+		const username = res.locals?.token?.payload?.username as string;
+		const { success, data, error } = await model.users.find({
+			where: { username },
+		});
+		if (success) {
+			response.success(res, "get user info success", data);
+		} else {
+			console.log(error);
+			response.error.internal(res);
+		}
+	}
+
+	@token.haveToken
+	@token.includePayload
+	private async info_edit(req: Request, res: Response, next: NextFunction) {
+		const username = res.locals?.token?.payload?.username as string;
+		const { success, data, error } = await model.users.update({
+			where: { username },
+			data: req.body,
+		});
+		if (success) {
+			response.success(res, "edit user info success", data);
+		} else {
+			console.log(error);
+			response.error.internal(res);
+		}
+	}
+
 	info = {
-		get(req: Request, res: Response, next: NextFunction) {},
-		edit(req: Request, res: Response, next: NextFunction) {},
+		get: this.info_get.bind(this),
+		edit: this.info_edit.bind(this),
 	};
 }
 
-export default new controller();
+export default new Controller();

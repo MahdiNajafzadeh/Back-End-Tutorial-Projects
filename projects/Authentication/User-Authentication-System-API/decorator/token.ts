@@ -4,9 +4,9 @@ import response from "../constant/response";
 
 const noToken = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 	const originalMethod = descriptor.value;
-	descriptor.value = async function (req: Request, res: Response, next: NextFunction) {
+	descriptor.value = function (req: Request, res: Response, next: NextFunction) {
 		if (!req.cookies?.token) {
-			originalMethod.call(this, ...arguments);
+			originalMethod.call(this, req, res, next);
 		} else {
 			return response.error.auth(res, "you have token");
 		}
@@ -16,7 +16,7 @@ const noToken = (target: any, propertyKey: string, descriptor: PropertyDescripto
 
 const haveToken = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 	const originalMethod = descriptor.value;
-	descriptor.value = async function (req: Request, res: Response, next: NextFunction) {
+	descriptor.value = function (req: Request, res: Response, next: NextFunction) {
 		const token = req.cookies?.token;
 		if (!token) {
 			return response.error.auth(res, "Token is missing");
@@ -30,4 +30,17 @@ const haveToken = (target: any, propertyKey: string, descriptor: PropertyDescrip
 	return descriptor;
 };
 
-export default { noToken, haveToken };
+const includePayload = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+	const originalMethod = descriptor.value;
+	descriptor.value = function (req: Request, res: Response, next: NextFunction) {
+		const payload = jwt.decode(req.cookies?.token);
+		res.locals.token = {
+			payload,
+			token: req.cookies?.token,
+		};
+		originalMethod.call(this, req, res, next);
+	};
+	return descriptor;
+};
+
+export default { noToken, haveToken, includePayload };

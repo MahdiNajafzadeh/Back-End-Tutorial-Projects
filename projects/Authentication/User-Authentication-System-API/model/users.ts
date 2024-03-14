@@ -57,6 +57,15 @@ const user_authentication = async (userLoginInfo: UserInfoLogin): Promise<ModelR
 	return user ? { success: true, data: true } : { success: true, data: false };
 };
 
+const user_find = async (prismaArgs: Prisma.usersFindManyArgs): Promise<ModelResponse> => {
+	try {
+		const data = await prisma.users.findMany(prismaArgs);
+		return { success: true, data };
+	} catch (error: any) {
+		return { success: false, error };
+	}
+};
+
 export default {
 	exist: {
 		by: {
@@ -67,4 +76,5 @@ export default {
 	update: user_update,
 	delete: user_delete,
 	authentication: user_authentication,
+	find: user_find,
 };
