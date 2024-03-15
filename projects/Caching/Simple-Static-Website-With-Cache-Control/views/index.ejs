@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    <title>
+        <%= "wallpaper world" %>
+    </title>
+</head>
+
+<body>
+    <h1>Welcome to Wallpaper-World</h1>
+    <% if(typeof image !== 'undefined') { %>
+    <img src="/image/<% image %>.jpg">
+    <% } else { %>
+    <p> main page</p>
+    <% } %>
+</body>
+
+</html>
