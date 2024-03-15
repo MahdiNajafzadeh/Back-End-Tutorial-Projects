@@ -12,7 +12,8 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const images = readdirSync("./views/image").map((v) => {
-	return { id: v.split(".")[0] };
+	const [id, ext] = v.split(".");
+	return { id, ext };
 });
 
 const app = express();
@@ -25,7 +26,7 @@ app.get("/*", (req: Request, res: Response, next: NextFunction) => {
 	const pathFile = path.join(__dirname, "views", req.path !== "/" ? req.path : "index");
 	if (!(existsSync(pathFile + ".ejs") || existsSync(pathFile + ".html"))) return next();
 
-	res.locals.title = req.path === '/image' ? `image : ${req.query?.id}` : "Wallpaper-World";
+	res.locals.title = req.path === "/image" ? `image : ${req.query?.id}` : "Wallpaper-World";
 	res.locals.query = req.query || "";
 	res.locals.images = images;
 

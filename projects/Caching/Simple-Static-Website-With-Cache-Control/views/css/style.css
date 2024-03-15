@@ -1,7 +1,3 @@
-html {
-    overflow: hidden;
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,7 +14,7 @@ body {
 
 h1,
 .wallpaper-item {
-    margin: 5px;
+    margin: 10px;
 }
 
 .wallpaper-img {
@@ -36,6 +32,6 @@ h1,
 
 .btn-return-to-home {
     background-color: black;
-    color: wheat;
-    border: 1px solid wheat;
+    color: rgb(167, 124, 44);
+    border: 1px solid rgb(167, 124, 44);
 }
