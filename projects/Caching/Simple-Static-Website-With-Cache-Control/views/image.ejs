@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+    <h1 style="display:inline;"> Welcome to Wallpaper-World </h1>
+    <a href="/">
+        <button class="btn-return-to-home">
+            <h2>
+                Return to Home
+            </h2>
+        </button>
+    </a>
+    <div class="wallpaper-container">
+        <div class="wallpaper-item">
+            <img class="wallpaper-img-main" src="./image/<%= query.id.slice(1,-1) %>.jpg">
+        </div>
+    </div>
+</body>
+
+</html>

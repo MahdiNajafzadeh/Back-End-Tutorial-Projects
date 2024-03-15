@@ -2,5 +2,5 @@
     "cSpell.words": [
         "Controll"
     ],
-    "compile-hero.disable-compile-files-on-did-save-code": false
+    "compile-hero.disable-compile-files-on-did-save-code": true
 }

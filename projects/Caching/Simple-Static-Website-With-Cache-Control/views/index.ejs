@@ -1,18 +1,24 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>
-        <%= "wallpaper world" %>
-    </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-    <h1>Welcome to Wallpaper-World</h1>
-    <% if(typeof image !== 'undefined') { %>
-    <img src="/image/<% image %>.jpg">
-    <% } else { %>
-    <p> main page</p>
-    <% } %>
+    <h1>Welcome to <%= title %></h1>
+    <div class="wallpaper-container">
+        <% for (const image of images) { %>
+        <div class="wallpaper-item">
+            <a href="/image?id=(<%= image.id %>)">
+                <img class="wallpaper-img" src="./image/<%= image.id %>.jpg" alt="image-<%= image.id %>" />
+            </a>
+        </div>
+        <% } %>
+    </div>
 </body>
 
 </html>

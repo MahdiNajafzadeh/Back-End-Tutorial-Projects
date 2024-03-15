@@ -1,0 +1,41 @@
+html {
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: rgb(167, 124, 44);
+}
+
+.wallpaper-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+h1,
+.wallpaper-item {
+    margin: 5px;
+}
+
+.wallpaper-img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.wallpaper-img-main {
+    max-width: calc(100% - 20%);
+    max-height: calc(100% - 20%);
+    object-fit: cover;
+
+}
+
+.btn-return-to-home {
+    background-color: black;
+    color: wheat;
+    border: 1px solid wheat;
+}
