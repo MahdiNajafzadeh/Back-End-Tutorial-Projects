@@ -27,8 +27,12 @@ app.get("/*", (req: Request, res: Response, next: NextFunction) => {
 	if (!(existsSync(pathFile + ".ejs") || existsSync(pathFile + ".html"))) return next();
 
 	res.locals.title = req.path === "/image" ? `image : ${req.query?.id}` : "Wallpaper-World";
-	res.locals.query = req.query || "";
+	res.locals.query = req.query;
 	res.locals.images = images;
+
+	if (res.locals.query?.id) {
+		res.locals.image = images.filter((img) => img.id === res.locals.query?.id.slice(1, -1))[0];
+	}
 
 	try {
 		res.render(pathFile + ".ejs");

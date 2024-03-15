@@ -14,7 +14,7 @@
         <% for (const image of images) { %>
         <div class="wallpaper-item">
             <a href="/image?id=(<%= image.id %>)">
-                <img class="wallpaper-img" src="./image/<%= image.id %>.<%= image.ext %>" alt="image-<%= image.id %>" />
+                <img class="wallpaper-img" src="./image/<%= image.id %>.<%= image.ext %>" alt="image-<%= image.id %>" loading="lazy" />
             </a>
         </div>
         <% } %>
