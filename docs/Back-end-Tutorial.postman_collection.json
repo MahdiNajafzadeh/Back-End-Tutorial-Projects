@@ -153,6 +153,150 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Simple-CRUD-API-Redis-Base",
+			"item": [
+				{
+					"name": "get all person",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{address}}:{{port}}/api/person",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one person",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{address}}:{{port}}/api/person/:id",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"person",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create person",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 2,\r\n    \"name\" : \"amir\",\r\n    \"family\" : \"mokhtarpour\",\r\n    \"age\" : 20,\r\n    \"email\": \"amir.mokhtarpour@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{address}}:{{port}}/api/person",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update person",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1,\r\n    \"name\" : \"mahdi\",\r\n    \"family\" : \"najafzadeh\",\r\n    \"age\" : 21 ,\r\n    \"email\": \"mahdi.najafzadeh@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{address}}:{{port}}/api/person/:id",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"person",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete person",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{address}}:{{port}}/api/person/:id",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"person",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
