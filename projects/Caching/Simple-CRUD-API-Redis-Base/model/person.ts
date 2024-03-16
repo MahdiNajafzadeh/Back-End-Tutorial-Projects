@@ -1,10 +1,21 @@
 import database from "../database/redis";
 
-const person_get_all = () => {};
-const person_get_one = () => {};
-const person_create = () => {};
-const person_update = () => {};
-const person_delete = () => {};
+interface Person {
+	name: string;
+	family: string;
+	age: number;
+	email: string;
+}
+
+const person_get_all = async () => {
+	const persons = await database.json.get('0');
+	console.log(persons);
+	return persons;
+};
+const person_get_one = (id: number) => {};
+const person_create = (person: Person) => {};
+const person_update = (id: number, person: Person) => {};
+const person_delete = (id: number) => {};
 
 export default {
 	get: {
